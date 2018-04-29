@@ -1,5 +1,5 @@
 [![CircleCI](https://circleci.com/gh/Recks11/spring5-mvc-rest.svg?style=svg)](https://circleci.com/gh/Recks11/spring5-mvc-rest)# Spring Framework 5 MVC Rest Application
 
-This repository is for an example application built in my Spring Framework 5 - Beginner to Guru
+This is a basic REST Api built as an example from my Spring 5 course.
 
-You can learn about my Spring Framework 5 Online course [here.](http://courses.springframework.guru/p/spring-framework-5-begginer-to-guru/?product_id=363173)
+ensure to run mvn compile.
