@@ -90,7 +90,7 @@ public class CustomerControllerTest {
 
         when(customerService.createNewCustomer(any(CustomerDTO.class))).thenReturn(returnBob);
 
-        mockMvc.perform(put(CustomerController.BASE_URL)
+        mockMvc.perform(post(CustomerController.BASE_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(bob)))
                 .andExpect(status().isCreated())
