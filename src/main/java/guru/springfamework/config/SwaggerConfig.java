@@ -46,14 +46,6 @@ public class SwaggerConfig {
         );
     }
 
-
-
-
-
-
-
-
-
     //for non spring projects, extend the {@link WebMvcConfigurationSupport} class and manually register resources
 //    @Override
 //    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
