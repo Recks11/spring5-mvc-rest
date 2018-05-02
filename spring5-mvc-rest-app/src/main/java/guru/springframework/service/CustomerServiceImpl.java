@@ -1,7 +1,7 @@
 package guru.springframework.service;
 
 import guru.springframework.api.v1.mapper.CustomerMapper;
-import guru.springframework.api.v1.model.CustomerDTO;
+import guru.springframework.model.CustomerDTO;
 import guru.springframework.controller.v1.CustomerController;
 import guru.springframework.domain.Customer;
 import guru.springframework.repositories.CustomerRepository;
@@ -28,7 +28,7 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerDTO createNewCustomer(CustomerDTO customerDTO) {
         Customer customer = customerRepository.save(customerMapper.customerDTOToCustomer(customerDTO));
         CustomerDTO returnDTO = customerMapper.customerToCustomerDTO(customer);
-        returnDTO.setCustomerUrl(getCustomerUrl(returnDTO.getId()));
+        returnDTO.setCustomerUrl(getCustomerUrl(customer.getId()));
         return returnDTO;
     }
 
@@ -38,7 +38,7 @@ public class CustomerServiceImpl implements CustomerService {
                 .stream()
                 .map(customer -> {
                     CustomerDTO customerDTO = customerMapper.customerToCustomerDTO(customer);
-                    customerDTO.setCustomerUrl(getCustomerUrl(customerDTO.getId()));
+                    customerDTO.setCustomerUrl(getCustomerUrl(customer.getId()));
                     return customerDTO;
                 })
                 .collect(Collectors.toList());
@@ -54,13 +54,13 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerDTO saveCustomerByDTO(Long id, CustomerDTO customerDTO) {
 
-        CustomerDTO customer = this.getCustomerById(id);
+        Customer customer = customerRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
         customer.setFirstName(customerDTO.getFirstName());
         customer.setLastName(customerDTO.getLastName());
 
-        Customer savedCustomer = customerRepository.save(customerMapper.customerDTOToCustomer(customer));
+        Customer savedCustomer = customerRepository.save(customer);
         CustomerDTO returnDTO = customerMapper.customerToCustomerDTO(savedCustomer);
-        returnDTO.setCustomerUrl(getCustomerUrl(returnDTO.getId()));
+        returnDTO.setCustomerUrl(getCustomerUrl(customer.getId()));
         return returnDTO;
     }
 
@@ -76,7 +76,7 @@ public class CustomerServiceImpl implements CustomerService {
                     }
 
                     CustomerDTO returnDTO = customerMapper.customerToCustomerDTO(customerRepository.save(customer));
-                    returnDTO.setCustomerUrl(getCustomerUrl(returnDTO.getId()));
+                    returnDTO.setCustomerUrl(getCustomerUrl(customer.getId()));
                     return returnDTO;
                 }).orElseThrow(ResourceNotFoundException::new); //todo implement exception handler
     }

@@ -1,6 +1,6 @@
 package guru.springframework.api.v1.mapper;
 
-import guru.springframework.api.v1.model.CustomerDTO;
+import guru.springframework.model.CustomerDTO;
 import guru.springframework.domain.Customer;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +17,6 @@ public class CustomerMapperTest {
         vica.setId(1L);
 
         CustomerDTO vicaDTO = customerMapper.customerToCustomerDTO(vica);
-        assertEquals(vica.getId(), vicaDTO.getId());
         assertEquals(vica.getFirstName(), vicaDTO.getFirstName());
         assertEquals(vica.getLastName(), vicaDTO.getLastName());
     }

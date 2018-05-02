@@ -1,7 +1,7 @@
 package guru.springframework.controller.v1;
 
-import guru.springframework.api.v1.model.CustomerDTO;
 import guru.springframework.controller.RestResponseEntityExceptionHandler;
+import guru.springframework.model.CustomerDTO;
 import guru.springframework.service.CustomerService;
 import guru.springframework.service.ResourceNotFoundException;
 import org.junit.Before;
@@ -60,7 +60,6 @@ public class CustomerControllerTest {
     @Test
     public void getCustomer() throws Exception{
         CustomerDTO bob = new CustomerDTO();
-        bob.setId(2L);
         bob.setLastName("The Builder");
         bob.setFirstName("Bob");
 
@@ -70,7 +69,6 @@ public class CustomerControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", equalTo(2)))
                 .andExpect(jsonPath("$.firstName", equalTo("Bob")))
                 .andExpect(jsonPath("$.lastName", equalTo("The Builder")))
                 .andReturn();
@@ -85,7 +83,6 @@ public class CustomerControllerTest {
         bob.setFirstName("Bob");
 
         CustomerDTO returnBob = new CustomerDTO();
-        returnBob.setId(2L);
         returnBob.setLastName("The Builder");
         returnBob.setFirstName("Bob");
         returnBob.setCustomerUrl("/api/v1/customers/2");
@@ -98,7 +95,7 @@ public class CustomerControllerTest {
                 .content(asJsonString(bob)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.firstName", equalTo("Bob")))
-                .andExpect(jsonPath("$.customer_url", equalTo(CustomerController.BASE_URL+"/2")));
+                .andExpect(jsonPath("$.customerUrl", equalTo(CustomerController.BASE_URL+"/2")));
     }
 
     @Test
@@ -108,13 +105,11 @@ public class CustomerControllerTest {
         bob.setFirstName("Bob");
 
         CustomerDTO returnBob = new CustomerDTO();
-        returnBob.setId(2L);
         returnBob.setLastName("The Builder");
         returnBob.setFirstName("Bob");
         returnBob.setCustomerUrl(CustomerController.BASE_URL+"/2");
 
         CustomerDTO updatedBob = new CustomerDTO();
-        updatedBob.setId(2L);
         updatedBob.setLastName("The Builder");
         updatedBob.setFirstName("Updated");
         updatedBob.setCustomerUrl(CustomerController.BASE_URL+"/2");
@@ -151,7 +146,7 @@ public class CustomerControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName", equalTo("Fred")))
                 .andExpect(jsonPath("$.lastName", equalTo("Flintstone")))
-                .andExpect(jsonPath("$.customer_url", equalTo(CustomerController.BASE_URL+"/2")));
+                .andExpect(jsonPath("$.customerUrl", equalTo(CustomerController.BASE_URL+"/2")));
     }
 
     @Test

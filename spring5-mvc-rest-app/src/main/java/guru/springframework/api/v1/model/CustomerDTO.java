@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class CustomerDTO {
-    private Long id;
+//    private Long id;
 
     @ApiModelProperty(value = "This is the first name", required = true)
     private String firstName;

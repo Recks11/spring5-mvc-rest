@@ -1,8 +1,8 @@
 package guru.springframework.service;
 
 import guru.springframework.api.v1.mapper.CustomerMapper;
-import guru.springframework.api.v1.model.CustomerDTO;
 import guru.springframework.domain.Customer;
+import guru.springframework.model.CustomerDTO;
 import guru.springframework.repositories.CustomerRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,9 +17,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class CustomerServiceTest {
     CustomerMapper customerMapper = CustomerMapper.INSTANCE;
@@ -68,7 +66,6 @@ public class CustomerServiceTest {
         when(customerRepository.save(any(Customer.class))).thenReturn(savedCustomer);
         CustomerDTO testCustomerDTO = customerService.createNewCustomer(customerDTO);
 
-        assertEquals(testCustomerDTO.getId(), savedCustomer.getId());
         assertEquals("/api/v1/customers/2", testCustomerDTO.getCustomerUrl());
 
     }
@@ -78,7 +75,6 @@ public class CustomerServiceTest {
         CustomerDTO customerDTO = new CustomerDTO();
         customerDTO.setFirstName("jimmy");
         customerDTO.setLastName("Neutron");
-        customerDTO.setId(2L);
 
 
         Customer customer = new Customer("jimmy","neutron");
@@ -91,7 +87,6 @@ public class CustomerServiceTest {
         newCustomer.setCustomerUrl("/api/v1/customers/"+ 2);
         newCustomer.setFirstName("updated");
         newCustomer.setLastName("neutron");
-        newCustomer.setId(2L);
 
         when(customerRepository.save(customerMapper.customerDTOToCustomer(customerDTO))).thenReturn(customer);
         CustomerDTO savedInstance = customerService.createNewCustomer(customerDTO);
@@ -100,11 +95,10 @@ public class CustomerServiceTest {
         when(customerRepository.findById(2L)).thenReturn(Optional.of(customer));
         when(customerRepository.save(any(Customer.class))).thenReturn(updatedCustomer);
 
-        CustomerDTO updatedInstance = customerService.saveCustomerByDTO(savedInstance.getId(), newCustomer);
+        CustomerDTO updatedInstance = customerService.saveCustomerByDTO(2L, newCustomer);
 
 
 
-        assertEquals(savedInstance.getId(), updatedInstance.getId());
         assertNotEquals(savedInstance.getFirstName(), updatedInstance.getFirstName());
         assertEquals(savedInstance.getLastName(), updatedInstance.getLastName());
         verify(customerRepository, times(2)).save(any(Customer.class));
